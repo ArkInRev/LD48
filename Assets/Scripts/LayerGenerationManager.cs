@@ -17,6 +17,7 @@ public class LayerGenerationManager : MonoBehaviour
     public GameObject[] basicRoom; // common/generic rooms
     public GameObject[] basicExit; // common/generic exits
     public GameObject[] basicEntrance; // common/generic entrances
+    public GameObject[] basicBorder; // common/gerneric border block pieces
 
     public float roomTileSize = 15f;
     public float roomTileHeight = 12f;
@@ -76,6 +77,8 @@ public class LayerGenerationManager : MonoBehaviour
         curGameLayer.exitWallLoc = findExitLoc(curGameLayer);
         curGameLayer.layerZeroZero = findLayerZeroZero(curGameLayer);
         instantiateRooms(curGameLayer);
+        //
+        instantiateBorder(curGameLayer);
         curGameLayer.exitPos = getExitPosition(curGameLayer);
         curGameLayer.exitLockNeeded = calculateExitNeededFromLayer(curGameLayer.thisLayerNumber);
         placeExit(curGameLayer);
@@ -181,6 +184,40 @@ public class LayerGenerationManager : MonoBehaviour
             for(int i = 0; i < thisLayer.layerWidth; i++)
             {
                 goInstantiated = Instantiate(randomPrefab(basicRoom), new Vector3(thisLayer.layerZeroZero.x+(i*roomTileSize), thisLayer.layerZeroZero.y, thisLayer.layerZeroZero.z+(j*roomTileSize)), GetSpawnRotation(randomPrefabRotation()), currentLayerParent.transform);
+            }
+        }
+    }
+
+    private void instantiateBorder(GameLayer thisLayer)
+    {
+        //instantiate north and south
+        for (int i = 0; i < thisLayer.layerWidth; i++)
+        {
+            if(!(((curGameLayer.exitWall==Direction.NORTH)&&(i==curGameLayer.exitWallLoc)) || ((curGameLayer.entranceWall == Direction.NORTH) && (i == curGameLayer.entranceWallLoc))))
+            {
+                //did not find a north wall matching exit or entrance, instantiate here
+                goInstantiated = Instantiate(basicBorder[0], new Vector3(thisLayer.layerZeroZero.x+(i*roomTileSize), thisLayer.layerZeroZero.y+5f, thisLayer.layerZeroZero.z + (roomTileSize/2)+((thisLayer.layerHeight-1)*roomTileSize)), GetSpawnRotation(90), currentLayerParent.transform);
+            }
+            //goInstantiated = Instantiate(randomPrefab(basicRoom), new Vector3(thisLayer.layerZeroZero.x + (i * roomTileSize), thisLayer.layerZeroZero.y, thisLayer.layerZeroZero.z + (j * roomTileSize)), GetSpawnRotation(randomPrefabRotation()), currentLayerParent.transform);
+            if (!(((curGameLayer.exitWall == Direction.SOUTH) && (i == curGameLayer.exitWallLoc)) || ((curGameLayer.entranceWall == Direction.SOUTH) && (i == curGameLayer.entranceWallLoc))))
+            {
+                //did not find a north wall matching exit or entrance, instantiate here
+                goInstantiated = Instantiate(basicBorder[0], new Vector3(thisLayer.layerZeroZero.x + (i * roomTileSize), thisLayer.layerZeroZero.y + 5f, thisLayer.layerZeroZero.z - (roomTileSize / 2)) , GetSpawnRotation(90), currentLayerParent.transform);
+            }
+        }
+        //instantiate east and west
+        for (int i = 0; i < thisLayer.layerWidth; i++)
+        {
+            if (!(((curGameLayer.exitWall == Direction.EAST) && (i == curGameLayer.exitWallLoc)) || ((curGameLayer.entranceWall == Direction.EAST) && (i == curGameLayer.entranceWallLoc))))
+            {
+                //did not find a north wall matching exit or entrance, instantiate here
+                goInstantiated = Instantiate(basicBorder[0], new Vector3(thisLayer.layerZeroZero.x + ((thisLayer.layerWidth - 1) * roomTileSize) + (roomTileSize/2), thisLayer.layerZeroZero.y + 5f, thisLayer.layerZeroZero.z + (i * roomTileSize)), GetSpawnRotation(0), currentLayerParent.transform);
+            }
+            //goInstantiated = Instantiate(randomPrefab(basicRoom), new Vector3(thisLayer.layerZeroZero.x + (i * roomTileSize), thisLayer.layerZeroZero.y, thisLayer.layerZeroZero.z + (j * roomTileSize)), GetSpawnRotation(randomPrefabRotation()), currentLayerParent.transform);
+            if (!(((curGameLayer.exitWall == Direction.WEST) && (i == curGameLayer.exitWallLoc)) || ((curGameLayer.entranceWall == Direction.WEST) && (i == curGameLayer.entranceWallLoc))))
+            {
+                //did not find a north wall matching exit or entrance, instantiate here
+                goInstantiated = Instantiate(basicBorder[0], new Vector3(thisLayer.layerZeroZero.x - (roomTileSize / 2) , thisLayer.layerZeroZero.y + 5f, thisLayer.layerZeroZero.z + (i * roomTileSize)), GetSpawnRotation(0), currentLayerParent.transform);
             }
         }
     }

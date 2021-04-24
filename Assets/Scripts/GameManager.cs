@@ -17,7 +17,13 @@ public class GameManager : MonoBehaviour
     public Transform playerReturnTransform;
     public GameObject player;
 
+    #region Setting adjustments
+    [Header("Game Settings")]
+    // Exit Doors
+    public float exitDoorBaseOpeningTime;
+    public float exitDoorMultiplierPerLayer;
 
+    #endregion
 
     private void Awake()
     {

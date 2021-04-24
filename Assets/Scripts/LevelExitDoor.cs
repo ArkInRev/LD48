@@ -14,7 +14,7 @@ public class LevelExitDoor : MonoBehaviour, IInteractable
     // Start is called before the first frame update
     void Start()
     {
-        thisExitLockNeeded = 1+(2*GameManager.Instance.getCurrentLayer());
+        thisExitLockNeeded = GameManager.Instance.exitDoorBaseOpeningTime+(GameManager.Instance.exitDoorMultiplierPerLayer*GameManager.Instance.getCurrentLayer());
     }
 
     // Update is called once per frame
