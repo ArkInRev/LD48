@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
 
+    private int currentGameLayer = 0;
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -36,6 +38,16 @@ public class GameManager : MonoBehaviour
         
     }
 
+    #region game data functions
+
+    public int getCurrentLayer()
+    {
+        return currentGameLayer;
+    }
+
+    #endregion
+
+
     #region Layer Generation Events
 
     public event Action onGenerateNextLayer;
@@ -45,7 +57,7 @@ public class GameManager : MonoBehaviour
         {
             onGenerateNextLayer();
         }
-
+        currentGameLayer += 1;
     }
 
     #endregion
