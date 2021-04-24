@@ -11,6 +11,9 @@ public class LayerGenerationManager : MonoBehaviour
 
     public List<GameLayer> gameLayers;
 
+    public GameObject layerRootGO;
+    public GameObject currentLayerParent;
+
     public GameObject[] basicRoom; // common/generic rooms
     public GameObject[] basicExit; // common/generic exits
     public GameObject[] basicEntrance; // common/generic entrances
@@ -51,8 +54,15 @@ public class LayerGenerationManager : MonoBehaviour
     {
         //goInstantiated = Instantiate(randomPrefab(basicRoom), new Vector3(0f,0f,0f), GetSpawnRotation(randomPrefabRotation()));
 
+
+
+
         curGameLayer = gameLayers[GameManager.Instance.getCurrentLayer()];
         curGameLayer.thisLayerNumber = GameManager.Instance.getCurrentLayer() + 1;
+        //instantiate parent for layer contents
+        currentLayerParent = new GameObject("Layer" + curGameLayer.thisLayerNumber);
+        //currentLayerParent = Instantiate(new GameObject(), new Vector3(0f, 0f, 0f), Quaternion.identity, layerRootGO.transform);
+        currentLayerParent.transform.parent = layerRootGO.transform;
 
         //check for end of prebuilt levels
         if (curGameLayer.thisLayerNumber >= gameLayers.Count)
@@ -67,6 +77,7 @@ public class LayerGenerationManager : MonoBehaviour
         curGameLayer.layerZeroZero = findLayerZeroZero(curGameLayer);
         instantiateRooms(curGameLayer);
         curGameLayer.exitPos = getExitPosition(curGameLayer);
+        curGameLayer.exitLockNeeded = calculateExitNeededFromLayer(curGameLayer.thisLayerNumber);
         placeExit(curGameLayer);
     }
 
@@ -80,6 +91,13 @@ public class LayerGenerationManager : MonoBehaviour
         return nextDepthLayer;
     }
 
+    private float calculateExitNeededFromLayer(int layerNum)
+    {
+        float exitNeededAmount = 0f;
+
+        exitNeededAmount += (4 + (layerNum * 2));
+        return exitNeededAmount;
+    }
 
     private int findEntranceLoc(GameLayer thisLayer)
     {
@@ -162,7 +180,7 @@ public class LayerGenerationManager : MonoBehaviour
         {
             for(int i = 0; i < thisLayer.layerWidth; i++)
             {
-                goInstantiated = Instantiate(randomPrefab(basicRoom), new Vector3(thisLayer.layerZeroZero.x+(i*roomTileSize), thisLayer.layerZeroZero.y, thisLayer.layerZeroZero.z+(j*roomTileSize)), GetSpawnRotation(randomPrefabRotation()));
+                goInstantiated = Instantiate(randomPrefab(basicRoom), new Vector3(thisLayer.layerZeroZero.x+(i*roomTileSize), thisLayer.layerZeroZero.y, thisLayer.layerZeroZero.z+(j*roomTileSize)), GetSpawnRotation(randomPrefabRotation()), currentLayerParent.transform);
             }
         }
     }
@@ -203,38 +221,42 @@ public class LayerGenerationManager : MonoBehaviour
         //instantiate entrance to next level
         //set entrance information for the next gameLayer
 
+        GameObject placedExit=null; 
+
         switch (thisLayer.exitWall)
         {
             case Direction.NORTH:
-                goInstantiated = Instantiate(basicExit[0], thisLayer.exitPos, GetSpawnRotation(270));
-                goInstantiated = Instantiate(basicExit[1], new Vector3(thisLayer.exitPos.x, thisLayer.exitPos.y - (roomTileHeight / 2), thisLayer.exitPos.z+roomTileSize), GetSpawnRotation(270));
-                goInstantiated = Instantiate(basicEntrance[0], new Vector3(thisLayer.exitPos.x+roomTileSize, thisLayer.exitPos.y - roomTileHeight, thisLayer.exitPos.z + roomTileSize), GetSpawnRotation(270));
+                placedExit = Instantiate(basicExit[0], thisLayer.exitPos, GetSpawnRotation(270),currentLayerParent.transform);
+                goInstantiated = Instantiate(basicExit[1], new Vector3(thisLayer.exitPos.x, thisLayer.exitPos.y - (roomTileHeight / 2), thisLayer.exitPos.z+roomTileSize), GetSpawnRotation(270), currentLayerParent.transform);
+                goInstantiated = Instantiate(basicEntrance[0], new Vector3(thisLayer.exitPos.x+roomTileSize, thisLayer.exitPos.y - roomTileHeight, thisLayer.exitPos.z + roomTileSize), GetSpawnRotation(270), currentLayerParent.transform);
                 gameLayers[thisLayer.thisLayerNumber].entrancePos = goInstantiated.transform.position;
                 gameLayers[thisLayer.thisLayerNumber].entranceWall = Direction.WEST;
 
                 break;
             case Direction.SOUTH:
-                goInstantiated = Instantiate(basicExit[0], thisLayer.exitPos, GetSpawnRotation(90));
-                goInstantiated = Instantiate(basicExit[1], new Vector3(thisLayer.exitPos.x,thisLayer.exitPos.y-(roomTileHeight/2),thisLayer.exitPos.z-roomTileSize), GetSpawnRotation(90));
-                goInstantiated = Instantiate(basicEntrance[0], new Vector3(thisLayer.exitPos.x-roomTileSize,thisLayer.exitPos.y-roomTileHeight,thisLayer.exitPos.z-roomTileSize), GetSpawnRotation(90));
+                placedExit = Instantiate(basicExit[0], thisLayer.exitPos, GetSpawnRotation(90), currentLayerParent.transform);
+                goInstantiated = Instantiate(basicExit[1], new Vector3(thisLayer.exitPos.x,thisLayer.exitPos.y-(roomTileHeight/2),thisLayer.exitPos.z-roomTileSize), GetSpawnRotation(90), currentLayerParent.transform);
+                goInstantiated = Instantiate(basicEntrance[0], new Vector3(thisLayer.exitPos.x-roomTileSize,thisLayer.exitPos.y-roomTileHeight,thisLayer.exitPos.z-roomTileSize), GetSpawnRotation(90), currentLayerParent.transform);
                 gameLayers[thisLayer.thisLayerNumber].entrancePos = goInstantiated.transform.position;
                 gameLayers[thisLayer.thisLayerNumber].entranceWall = Direction.EAST;
                 break;
             case Direction.EAST:
-                goInstantiated = Instantiate(basicExit[0], thisLayer.exitPos, GetSpawnRotation(0));
-                goInstantiated = Instantiate(basicExit[1], new Vector3(thisLayer.exitPos.x+roomTileSize, thisLayer.exitPos.y - (roomTileHeight / 2), thisLayer.exitPos.z), GetSpawnRotation(0));
-                goInstantiated = Instantiate(basicEntrance[0], new Vector3(thisLayer.exitPos.x + roomTileSize, thisLayer.exitPos.y - roomTileHeight, thisLayer.exitPos.z - roomTileSize), GetSpawnRotation(0));
+                placedExit = Instantiate(basicExit[0], thisLayer.exitPos, GetSpawnRotation(0), currentLayerParent.transform);
+                goInstantiated = Instantiate(basicExit[1], new Vector3(thisLayer.exitPos.x+roomTileSize, thisLayer.exitPos.y - (roomTileHeight / 2), thisLayer.exitPos.z), GetSpawnRotation(0), currentLayerParent.transform);
+                goInstantiated = Instantiate(basicEntrance[0], new Vector3(thisLayer.exitPos.x + roomTileSize, thisLayer.exitPos.y - roomTileHeight, thisLayer.exitPos.z - roomTileSize), GetSpawnRotation(0), currentLayerParent.transform);
                 gameLayers[thisLayer.thisLayerNumber].entrancePos = goInstantiated.transform.position;
                 gameLayers[thisLayer.thisLayerNumber].entranceWall = Direction.NORTH;
                 break;
             case Direction.WEST:
-                goInstantiated = Instantiate(basicExit[0], thisLayer.exitPos, GetSpawnRotation(180));
-                goInstantiated = Instantiate(basicExit[1], new Vector3(thisLayer.exitPos.x - roomTileSize, thisLayer.exitPos.y - (roomTileHeight / 2), thisLayer.exitPos.z), GetSpawnRotation(180));
-                goInstantiated = Instantiate(basicEntrance[0], new Vector3(thisLayer.exitPos.x - roomTileSize, thisLayer.exitPos.y - roomTileHeight, thisLayer.exitPos.z + roomTileSize), GetSpawnRotation(180));
+                placedExit = Instantiate(basicExit[0], thisLayer.exitPos, GetSpawnRotation(180), currentLayerParent.transform);
+                goInstantiated = Instantiate(basicExit[1], new Vector3(thisLayer.exitPos.x - roomTileSize, thisLayer.exitPos.y - (roomTileHeight / 2), thisLayer.exitPos.z), GetSpawnRotation(180), currentLayerParent.transform);
+                goInstantiated = Instantiate(basicEntrance[0], new Vector3(thisLayer.exitPos.x - roomTileSize, thisLayer.exitPos.y - roomTileHeight, thisLayer.exitPos.z + roomTileSize), GetSpawnRotation(180), currentLayerParent.transform);
                 gameLayers[thisLayer.thisLayerNumber].entrancePos = goInstantiated.transform.position;
                 gameLayers[thisLayer.thisLayerNumber].entranceWall = Direction.SOUTH;
                 break;
         }
+
+
 
     }
 

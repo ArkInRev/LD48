@@ -13,6 +13,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get { return _instance; } }
 
     private int currentGameLayer = 0;
+    public Transform playerCheckpointTransform;
+    public Transform playerReturnTransform;
+    public GameObject player;
+
+
 
     private void Awake()
     {
@@ -47,6 +52,35 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    #region Gameplay
+
+    public void interactWithCheckpoint(Transform playerCheckpoint, GameObject checkpointSpawn, GameObject checkpointSphere)
+    {
+        playerCheckpointTransform = playerCheckpoint;
+        checkpointChanged(checkpointSpawn, checkpointSphere);
+    }
+
+    public void interactWithReturnArtifact(GameObject returnArtifactGO)
+    {
+        player.transform.position = playerReturnTransform.position;
+        returnArtifactUsed(returnArtifactGO);
+    }
+
+    public void interactWithDescendArtifact()
+    {
+        if (playerCheckpointTransform != null)
+        {
+            player.transform.position = playerCheckpointTransform.position;
+            descendArtifactUsed();
+        }
+    }
+
+    public void interactWithExitDoor()
+    {
+
+    }
+
+    #endregion
 
     #region Layer Generation Events
 
@@ -64,6 +98,37 @@ public class GameManager : MonoBehaviour
 
 
     #region Interaction Events
+
+
+    public event Action<GameObject,GameObject> onCheckpointChanged;
+    public void checkpointChanged(GameObject checkpointSpawn, GameObject checkpointSphere)
+    {
+        if (onCheckpointChanged != null)
+        {
+            onCheckpointChanged(checkpointSpawn,checkpointSphere);
+           /// Debug.Log("Changing Checkpoint...");
+        }
+    }
+
+    public event Action<GameObject> onReturnArtifactUsed;
+    public void returnArtifactUsed(GameObject artifactUsed)
+    {
+        if (onReturnArtifactUsed != null)
+        {
+            onReturnArtifactUsed(artifactUsed);
+            //Debug.Log("Returning Home...");
+        }
+    }
+
+    public event Action onDescendArtifactUsed;
+    public void descendArtifactUsed()
+    {
+        if (onDescendArtifactUsed != null)
+        {
+            onDescendArtifactUsed();
+            Debug.Log("Returning Deeper and Deeper...");
+        }
+    }
 
     #endregion
 

@@ -6,12 +6,16 @@ public class Interaction : MonoBehaviour
 {
     private int layer_mask;
     private bool tryInteract;
+    private bool highlighting;
+    private Transform lastTransformHit;
 
     public float interactDistance;
 
     private void Start()
     {
         layer_mask = LayerMask.GetMask("Interactable");
+        highlighting = false;
+        lastTransformHit = null;
     }
 
     void Update()
@@ -36,6 +40,9 @@ public class Interaction : MonoBehaviour
         if (Physics.Raycast(ray, out hit, interactDistance,layer_mask))
         {
             Debug.Log(hit.transform.name + "Found!");
+            hit.transform.GetComponent<MeshRenderer>().materials[1].SetFloat("Vector1_43C9FF66", 1);
+            highlighting = true;
+            lastTransformHit = hit.transform;
 
             if (tryInteract)
             {
@@ -46,7 +53,16 @@ public class Interaction : MonoBehaviour
                 }
 
             }
+        } else
+        {
+            if ((lastTransformHit != null) && (highlighting))
+            {
+                highlighting = false;
+                lastTransformHit.GetComponent<MeshRenderer>().materials[1].SetFloat("Vector1_43C9FF66", 0);
+                lastTransformHit = null;
+            }
         }
+                
 
 
     }
