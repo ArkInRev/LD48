@@ -89,8 +89,19 @@ public class LayerGenerationManager : MonoBehaviour
         GameLayer nextDepthLayer = new GameLayer();
 
         nextDepthLayer.thisLayerNumber = layerNum + 1;
-        nextDepthLayer.layerWidth = 3;//layerNum + 2;
-        nextDepthLayer.layerHeight =3;// layerNum + 2;
+
+        if (GameManager.Instance.staticFloors)
+        {
+            nextDepthLayer.layerWidth = Mathf.Clamp(layerNum + (int)Random.Range(0, 2), 2, layerNum + 2);
+            nextDepthLayer.layerHeight = Mathf.Clamp(layerNum + (int)Random.Range(0, 2),2,layerNum+2);
+
+        }
+        else
+        {
+            nextDepthLayer.layerWidth = 3;//layerNum + 2;
+            nextDepthLayer.layerHeight = 3;// layerNum + 2;
+
+        }
         return nextDepthLayer;
     }
 

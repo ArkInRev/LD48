@@ -40,12 +40,16 @@ public class ThirdPersonController : MonoBehaviour
         vertLook = (Input.GetAxisRaw("Mouse Y") * rotSpeed * sensitivity);
 
         if (Input.GetKeyDown(KeyCode.LeftShift)) ToggleCursorLock();
-        if (Input.GetKeyDown(KeyCode.Alpha1)) sensitivity = 0.25f;
-        if (Input.GetKeyDown(KeyCode.Alpha2)) sensitivity = 0.5f;
-        if (Input.GetKeyDown(KeyCode.Alpha3)) sensitivity = 1f;
-        if (Input.GetKeyDown(KeyCode.Alpha4)) sensitivity = 2f;
-        if (Input.GetKeyDown(KeyCode.Alpha5)) sensitivity = 4f;
-
+        if (Input.GetKeyDown(KeyCode.Alpha1)) sensitivity = 0.05f;
+        if (Input.GetKeyDown(KeyCode.Alpha2)) sensitivity = 0.1f;
+        if (Input.GetKeyDown(KeyCode.Alpha3)) sensitivity = 0.15f;
+        if (Input.GetKeyDown(KeyCode.Alpha4)) sensitivity = 0.25f;
+        if (Input.GetKeyDown(KeyCode.Alpha5)) sensitivity = 0.5f;
+        if (Input.GetKeyDown(KeyCode.Alpha6)) sensitivity = 0.75f;
+        if (Input.GetKeyDown(KeyCode.Alpha7)) sensitivity = 1f;
+        if (Input.GetKeyDown(KeyCode.Alpha8)) sensitivity = 2f;
+        if (Input.GetKeyDown(KeyCode.Alpha9)) sensitivity = 4f;
+        if (Input.GetKeyDown(KeyCode.Alpha0)) sensitivity = 8f;
 
     }
 

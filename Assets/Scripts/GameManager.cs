@@ -19,10 +19,19 @@ public class GameManager : MonoBehaviour
 
     #region Setting adjustments
     [Header("Game Settings")]
+    public bool staticFloors;
+    public Color breakingColor;
     // Exit Doors
     public float exitDoorBaseOpeningTime;
     public float exitDoorMultiplierPerLayer;
-
+    //Debris
+    public float minDebrisDestroyRange;
+    public float maxDebrisDestroyRange;
+    public float maxDebrisDestroy;
+    public float debrisAdditiveLayerMultiplier;
+    public float debrisChanceBase;
+    public float debrisAdditionPerLayer;
+    public float debrisSaturation;
     #endregion
 
     private void Awake()
@@ -132,7 +141,17 @@ public class GameManager : MonoBehaviour
         if (onDescendArtifactUsed != null)
         {
             onDescendArtifactUsed();
-            Debug.Log("Returning Deeper and Deeper...");
+            //Debug.Log("Returning Deeper and Deeper...");
+        }
+    }
+
+    public event Action onDebrisDestroyed;
+    public void debrisDestroyed()
+    {
+        if (onDebrisDestroyed != null)
+        {
+            onDebrisDestroyed();
+            Debug.Log("Debris destroyed...");
         }
     }
 
