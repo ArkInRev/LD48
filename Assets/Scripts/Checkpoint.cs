@@ -20,9 +20,9 @@ public class Checkpoint : MonoBehaviour
         GameManager.Instance.onCheckpointChanged += OnCheckpointChanged;
         GameManager.Instance.onDescendArtifactUsed += OnDescendArtifactUsed;
 
-        playerSpawnPos = this.transform.GetChild(0).transform;
-        thisCheckpointSpawn = this.transform.GetChild(1).gameObject;
-        thisCheckpointSphere = this.transform.GetChild(2).gameObject;
+//        playerSpawnPos = this.transform.GetChild(0).transform;
+//        thisCheckpointSpawn = this.transform.GetChild(1).gameObject;
+//        thisCheckpointSphere = this.transform.GetChild(2).gameObject;
     }
 
     private void OnCheckpointChanged(GameObject checkpointSpawn, GameObject checkpointSphere)

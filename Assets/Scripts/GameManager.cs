@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     public float spellcraft;
     public float sanityMax;
     public float sanity;
-    public List<Phobias> phobias;
+    public List<PhobiasSO> phobias;
     public float spellcraftRestoreMultiplier;
     //artifact
     public float bookMinDrain;
@@ -49,7 +49,25 @@ public class GameManager : MonoBehaviour
     public float artifactAdditionPerLayer;
     public float artifactSaturation;
     // Phobias
-    public List<Phobias> availablePhobias;
+    public List<PhobiasSO> allPhobias;
+    public List<PhobiasSO> availablePhobias;
+
+    public float phobiaPenaltyDiv;
+
+    public bool hasAtaxMess;
+    public bool hasBathSlope;
+    public bool hasBiblioBook;
+    public bool hasErgoWork;
+    public bool hasKoinRoom;
+    public bool hasNyctDark;
+
+    private bool triggeringAtaxMess;
+    private bool triggeringBathSlope;
+    private bool triggeringBiblioBook;
+    private bool triggeringErgoWork;
+    private bool triggeringKoinRoom;
+    private bool triggeringNyctDark;
+
     #endregion
 
     #region Phobias enum
@@ -72,13 +90,13 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        availablePhobias.Add(Phobias.ATAXOPHOBIA);
-        availablePhobias.Add(Phobias.BATHMOPHOBIA);
-        availablePhobias.Add(Phobias.BIBLIOPHOBIA);
-        availablePhobias.Add(Phobias.ERGOPHOBIA);
-        availablePhobias.Add(Phobias.KOINONIPHOBIA);
-        availablePhobias.Add(Phobias.NYCTOPHOBIA);
-
+        //        availablePhobias.Add(Phobias.ATAXOPHOBIA);
+        //        availablePhobias.Add(Phobias.BATHMOPHOBIA);
+        //        availablePhobias.Add(Phobias.BIBLIOPHOBIA);
+        //       availablePhobias.Add(Phobias.ERGOPHOBIA);
+        //        availablePhobias.Add(Phobias.KOINONIPHOBIA);
+        //        availablePhobias.Add(Phobias.NYCTOPHOBIA);
+        resetAvailablePhobias();
         changeSpellcraft(0);
         changeSpellcraftTotal(0);
 
@@ -92,13 +110,38 @@ public class GameManager : MonoBehaviour
         
     }
 
+    private void LateUpdate()
+    {
+
+    }
+
     private void FixedUpdate()
     {
         // Lower sanity over time
         float sanityLost = Time.fixedDeltaTime;
         changeSanity(-1 * sanityLost);
         // handle running out of sanity
+        if (sanity <= 0)
+        {
+            sanity = sanityMax;
+            teleportPlayerToStart();
+            if (phobias.Count >= 3)
+            {
+                //do game over
+                gameOver();
+            } else
+            {
+                gainRandomPhobia();
+            }
+
+        }
+
+        if (triggeringAtaxMess) doPhobiaDamage();
+
+
+
     }
+
 
 
     #region game data functions
@@ -112,6 +155,114 @@ public class GameManager : MonoBehaviour
 
     #region Gameplay
 
+    private void doPhobiaDamage()
+    {
+        changeSanity(-1*Time.fixedDeltaTime / phobiaPenaltyDiv);
+    }
+
+    public void teleportPlayerToStart()
+    {
+        player.transform.position = playerReturnTransform.position;
+    }
+
+    public void gainRandomPhobia()
+    {
+        PhobiasSO selectedPhobia;
+
+        int index = UnityEngine.Random.Range((int)0, (int)availablePhobias.Count);
+        selectedPhobia = availablePhobias[index];
+        availablePhobias.RemoveAt(index);
+        phobias.Add(selectedPhobia);
+        phobiaGained(selectedPhobia);
+        switch (selectedPhobia.phobiaID)
+        {
+            case Phobias.ATAXOPHOBIA:
+                hasAtaxMess = true;
+                break;
+            case Phobias.BATHMOPHOBIA:
+                hasBathSlope = true;
+                break;
+            case Phobias.BIBLIOPHOBIA:
+                hasBiblioBook = true;
+                break;
+            case Phobias.ERGOPHOBIA:
+                hasErgoWork = true;
+                break;
+            case Phobias.NYCTOPHOBIA:
+                hasNyctDark = true;
+                break;
+        }
+
+    }
+
+    public void resetAvailablePhobias()
+    {
+        availablePhobias = new List<PhobiasSO>();
+        for(int i = 0; i < allPhobias.Count; i++)
+        {
+            availablePhobias.Add(allPhobias[i]);
+        }
+    }
+
+    public void handleTooManyPhobia()
+    {
+
+    }
+
+
+    public void startGameOver()
+    {
+
+    }
+
+    public void triggeringPhobia(Phobias phob)
+    {
+        switch (phob)
+        {
+
+        
+        case Phobias.ATAXOPHOBIA:
+                triggeringAtaxMess = true;
+        break;
+            case Phobias.BATHMOPHOBIA:
+                triggeringBathSlope = true;
+        break;
+            case Phobias.BIBLIOPHOBIA:
+                triggeringBiblioBook = true;
+        break;
+            case Phobias.ERGOPHOBIA:
+                triggeringErgoWork = true;
+        break;
+            case Phobias.NYCTOPHOBIA:
+                triggeringNyctDark = true;
+        break;
+        }
+    }
+
+    public void stopTriggeringPhobia(Phobias phob)
+    {
+        switch (phob)
+        {
+
+
+            case Phobias.ATAXOPHOBIA:
+                triggeringAtaxMess = false;
+                break;
+            case Phobias.BATHMOPHOBIA:
+                triggeringBathSlope = false;
+                break;
+            case Phobias.BIBLIOPHOBIA:
+                triggeringBiblioBook = false;
+                break;
+            case Phobias.ERGOPHOBIA:
+                triggeringErgoWork = false;
+                break;
+            case Phobias.NYCTOPHOBIA:
+                triggeringNyctDark = false;
+                break;
+        }
+    }
+
     public void interactWithCheckpoint(Transform playerCheckpoint, GameObject checkpointSpawn, GameObject checkpointSphere)
     {
         playerCheckpointTransform = playerCheckpoint;
@@ -120,9 +271,9 @@ public class GameManager : MonoBehaviour
 
     public void interactWithReturnArtifact(GameObject returnArtifactGO)
     {
-        player.transform.position = playerReturnTransform.position;
-        spellcraft = spellcraftMax;
-        changedSpellcraft();
+        teleportPlayerToStart();
+        //spellcraft = spellcraftMax;
+        //changedSpellcraft();
         returnArtifactUsed(returnArtifactGO);
     }
 
@@ -292,9 +443,29 @@ public class GameManager : MonoBehaviour
 
         }
     }
+
+    public event Action<PhobiasSO> onPhobiaGained;
+    public void phobiaGained(PhobiasSO phob)
+    {
+        if (onPhobiaGained != null)
+        {
+            onPhobiaGained(phob);
+
+        }
+    }
     #endregion
 
-    #region Player Events
+    #region Game State Events
+
+    public event Action onGameOver;
+    public void gameOver()
+    {
+        if (onGameOver != null)
+        {
+            onGameOver();
+
+        }
+    }
 
     #endregion
 

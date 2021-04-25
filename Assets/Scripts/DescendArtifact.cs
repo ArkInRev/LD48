@@ -6,6 +6,7 @@ public class DescendArtifact : MonoBehaviour, IInteractable
 {
     public GameObject tutorialTrigger;
     public MeshRenderer mesh;
+
     public void Interact()
     {
         //teleport player to start

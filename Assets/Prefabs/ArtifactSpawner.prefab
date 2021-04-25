@@ -46,8 +46,8 @@ MonoBehaviour:
   layerParent: {fileID: 0}
   artifacts:
   - {fileID: 8168017055906736336, guid: 3e568841b8eecd842a6074ac7a07f5ea, type: 3}
-  - {fileID: 8168017055906736336, guid: 3e568841b8eecd842a6074ac7a07f5ea, type: 3}
-  - {fileID: 8168017055906736336, guid: 3e568841b8eecd842a6074ac7a07f5ea, type: 3}
-  - {fileID: 8168017055906736336, guid: 3e568841b8eecd842a6074ac7a07f5ea, type: 3}
+  - {fileID: 7726185527269446141, guid: 2c758df47b21b384a8975f5ff0dc1155, type: 3}
+  - {fileID: 256659983154594754, guid: 9f8f94549ba9c9d4ca6941dc0beb157b, type: 3}
+  - {fileID: 3364547472389782986, guid: 5820b8edd9ee5af4e8cdc76f0e7cb965, type: 3}
   - {fileID: 7185652106390969454, guid: 4d7408c0368775f4e832d3aeb784360c, type: 3}
   goInstantiated: {fileID: 0}
