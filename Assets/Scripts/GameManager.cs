@@ -21,10 +21,11 @@ public class GameManager : MonoBehaviour
     [Header("Game Settings")]
     public bool staticFloors;
     public Color breakingColor;
+    public Color drainingColor;
     // Exit Doors
     public float exitDoorBaseOpeningTime;
     public float exitDoorMultiplierPerLayer;
-    //Debris
+    // Debris
     public float minDebrisDestroyRange;
     public float maxDebrisDestroyRange;
     public float maxDebrisDestroy;
@@ -32,7 +33,28 @@ public class GameManager : MonoBehaviour
     public float debrisChanceBase;
     public float debrisAdditionPerLayer;
     public float debrisSaturation;
+    // Player
+    public float spellcraftMax;
+    public float spellcraft;
+    public float sanityMax;
+    public float sanity;
+    public List<Phobias> phobias;
+    //artifact
+    public float bookMinDrain;
+    public float bookMaxDrain;
+    public float artifactMinDrain;
+    public float artifactMaxDrain;
+    public float artifactChanceBase;
+    public float artifactAdditionPerLayer;
+    public float artifactSaturation;
+    // Phobias
+    public List<Phobias> availablePhobias;
     #endregion
+
+    #region Phobias enum
+
+    #endregion
+
 
     private void Awake()
     {
@@ -49,7 +71,19 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        availablePhobias.Add(Phobias.ATAXOPHOBIA);
+        availablePhobias.Add(Phobias.BATHMOPHOBIA);
+        availablePhobias.Add(Phobias.BIBLIOPHOBIA);
+        availablePhobias.Add(Phobias.ERGOPHOBIA);
+        availablePhobias.Add(Phobias.KOINONIPHOBIA);
+        availablePhobias.Add(Phobias.NYCTOPHOBIA);
+
+        changeSpellcraft(0);
+        changeSpellcraftTotal(0);
+
+
+
+
     }
 
     // Update is called once per frame
@@ -78,6 +112,8 @@ public class GameManager : MonoBehaviour
     public void interactWithReturnArtifact(GameObject returnArtifactGO)
     {
         player.transform.position = playerReturnTransform.position;
+        spellcraft = spellcraftMax;
+        changedSpellcraft();
         returnArtifactUsed(returnArtifactGO);
     }
 
@@ -90,9 +126,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void interactWithExitDoor()
+    public void changeSpellcraft(float amount)
     {
+        spellcraft = Mathf.Clamp(spellcraft + amount, 0, spellcraftMax);
+        changedSpellcraft();
+    }
 
+    public void changeSpellcraftTotal(float amount)
+    {
+        spellcraftMax += amount;
+        changedSpellcraftTotal();
     }
 
     #endregion
@@ -151,10 +194,49 @@ public class GameManager : MonoBehaviour
         if (onDebrisDestroyed != null)
         {
             onDebrisDestroyed();
-            Debug.Log("Debris destroyed...");
+            //Debug.Log("Debris destroyed...");
         }
     }
 
+    public event Action onExitDoorDestroyed;
+    public void destroyedExitDoor()
+    {
+        if (onExitDoorDestroyed != null)
+        {
+            onExitDoorDestroyed();
+            //Debug.Log("Exit Door Destroyed...");
+        }
+    }
+
+
+    public event Action onBookDestroyed;
+    public void bookDestroyed()
+    {
+        if (onBookDestroyed != null)
+        {
+            onBookDestroyed();
+            //Debug.Log("Debris destroyed...");
+        }
+    }
+
+    public event Action onChangedSpellcraft;
+    public void changedSpellcraft()
+    {
+        if (onChangedSpellcraft != null)
+        {
+            onChangedSpellcraft();
+        }
+    }
+
+    public event Action onChangedSpellcraftTotal;
+    public void changedSpellcraftTotal()
+    {
+        if (onChangedSpellcraftTotal != null)
+        {
+            onChangedSpellcraftTotal();
+
+        }
+    }
     #endregion
 
     #region Player Events

@@ -34,3 +34,13 @@ public enum Direction
     EAST,
     WEST
 }
+
+public enum Phobias
+{
+    ERGOPHOBIA, //fear of work, removing debris
+    BIBLIOPHOBIA, //fear of books
+    BATHMOPHOBIA, //fear of slopes or stairs
+    NYCTOPHOBIA,   //fear of the dark
+    ATAXOPHOBIA, // fear of a mess
+    KOINONIPHOBIA // fear of rooms
+}

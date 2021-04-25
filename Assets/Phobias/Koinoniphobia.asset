@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74bcaf0cf607ded49b93a109327b238f, type: 3}
+  m_Name: Koinoniphobia
+  m_EditorClassIdentifier: 
+  phobiaID: 5
+  phobiaName: Koinoniphobia
+  description: Fear of rooms
+  developed: Endless chambers. Their echoes are whispers of a mad deity, calling
+    me to its side.
+  attackAnxiety:
+  - There are so many. Too many rooms buried in the darkness!
+  - Maybe the next exit will offer respite from the embrace of these abandoned halls.
+  - 'Delving into a ruined and forgotten city full of ancient rooms... It''s too
+    much, they wrap their horrid walls around me! '

@@ -15,10 +15,10 @@ public class SpawnDebris : MonoBehaviour
     {
         debrisChance = Mathf.Clamp(GameManager.Instance.debrisChanceBase + (GameManager.Instance.debrisAdditionPerLayer * GameManager.Instance.getCurrentLayer()),0,GameManager.Instance.debrisSaturation);
         float debrisRoll = Random.Range(0f, 1f);
-        Debug.Log("Trying to instantiate Debris... " + debrisChance.ToString() + " chance against a " + debrisRoll.ToString() + " roll.");
+ //       Debug.Log("Trying to instantiate Debris... " + debrisChance.ToString() + " chance against a " + debrisRoll.ToString() + " roll.");
         if (debrisRoll <= debrisChance)
         {
-            Debug.Log("In the debris instantiation...");
+ //           Debug.Log("In the debris instantiation...");
             goInstantiated = Instantiate(debris, gameObject.transform.position, GetSpawnRotation(Random.Range(0,360)), LayerGenerationManager.Instance.currentLayerParent.transform);
         }
         Destroy(gameObject);

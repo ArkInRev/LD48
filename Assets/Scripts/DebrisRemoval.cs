@@ -18,9 +18,15 @@ public class DebrisRemoval : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        destroyProgress += Time.fixedDeltaTime;
-        lerpedBreakingColor = Color.Lerp(Color.white, breakingColor,destroyProgress/thisTimeToDestroy);
-        mesh.materials[0].color = lerpedBreakingColor;
+
+        if (GameManager.Instance.spellcraft >= Time.fixedDeltaTime)
+        {
+            destroyProgress += Time.fixedDeltaTime;
+            GameManager.Instance.changeSpellcraft(-1*Time.fixedDeltaTime);
+            lerpedBreakingColor = Color.Lerp(Color.white, breakingColor,destroyProgress/thisTimeToDestroy);
+            mesh.materials[0].color = lerpedBreakingColor;
+        }
+
 
         if (destroyProgress >= thisTimeToDestroy)
         {

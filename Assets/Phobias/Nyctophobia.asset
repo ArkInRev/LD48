@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74bcaf0cf607ded49b93a109327b238f, type: 3}
+  m_Name: Nyctophobia
+  m_EditorClassIdentifier: 
+  phobiaID: 3
+  phobiaName: Nyctophobia
+  description: Fear of the dark
+  developed: The time in the dark, smothered by endless shadow, I can no longer endure
+    the darkness.
+  attackAnxiety:
+  - 'No respite beneath the earth. Everything is darkness and it surrounds me. '
+  - Shadows lurking everywhere. Nowhere is safe! Nowhere!
+  - 'Things couldn''t be worse: A fear of the dark, and ancient relics buried in
+    forgotten depths. '
