@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DescendArtifact : MonoBehaviour, IInteractable
 {
-
+    public GameObject tutorialTrigger;
+    public MeshRenderer mesh;
     public void Interact()
     {
         //teleport player to start
@@ -19,9 +20,11 @@ public class DescendArtifact : MonoBehaviour, IInteractable
     private void OnCheckpointChanged(GameObject spawn, GameObject orb)
     {
         //enable mesh, box collider, change layer
+        mesh.enabled = true;
         this.GetComponent<MeshRenderer>().enabled = true;
         this.GetComponent<BoxCollider>().enabled = true;
         this.gameObject.layer = LayerMask.NameToLayer("Interactable");
+        tutorialTrigger.SetActive(true);
         //Unregister, only need to know the first
         GameManager.Instance.onCheckpointChanged -= OnCheckpointChanged;
     }

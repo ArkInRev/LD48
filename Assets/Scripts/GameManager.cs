@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     public float sanityMax;
     public float sanity;
     public List<Phobias> phobias;
+    public float spellcraftRestoreMultiplier;
     //artifact
     public float bookMinDrain;
     public float bookMaxDrain;
@@ -86,11 +87,19 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         
     }
+
+    private void FixedUpdate()
+    {
+        // Lower sanity over time
+        float sanityLost = Time.fixedDeltaTime;
+        changeSanity(-1 * sanityLost);
+        // handle running out of sanity
+    }
+
 
     #region game data functions
 
@@ -136,6 +145,23 @@ public class GameManager : MonoBehaviour
     {
         spellcraftMax += amount;
         changedSpellcraftTotal();
+    }
+
+    public void changeSanity(float amount)
+    {
+        sanity = Mathf.Clamp(sanity + amount, 0, sanityMax);
+        changedSanity();
+    }
+
+    public void changeSanityTotal(float amount)
+    {
+        sanityMax += amount;
+        changedSanityTotal();
+    }
+
+    public void triggerTutorial(string message)
+    {
+        tutorialTriggered(message);
     }
 
     #endregion
@@ -234,6 +260,35 @@ public class GameManager : MonoBehaviour
         if (onChangedSpellcraftTotal != null)
         {
             onChangedSpellcraftTotal();
+
+        }
+    }
+
+    public event Action onChangedSanity;
+    public void changedSanity()
+    {
+        if (onChangedSanity != null)
+        {
+            onChangedSanity();
+        }
+    }
+
+    public event Action onChangedSanityTotal;
+    public void changedSanityTotal()
+    {
+        if (onChangedSanityTotal != null)
+        {
+            onChangedSanityTotal();
+
+        }
+    }
+
+    public event Action<string> onTutorialTriggered;
+    public void tutorialTriggered(string msg)
+    {
+        if (onTutorialTriggered != null)
+        {
+            onTutorialTriggered(msg);
 
         }
     }

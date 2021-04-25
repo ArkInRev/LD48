@@ -20,11 +20,11 @@ public class Interaction : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire2"))
+        if ((Input.GetButtonDown("Fire2"))|| (Input.GetButtonDown("Fire1")))
         {
             tryInteract = true;
         }
-        if (Input.GetButtonUp("Fire2"))
+        if ((Input.GetButtonUp("Fire2")) || (Input.GetButtonUp("Fire1")))
         {
             tryInteract = false;
         }

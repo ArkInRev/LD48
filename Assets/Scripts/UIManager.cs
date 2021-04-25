@@ -39,7 +39,9 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.onExitDoorDestroyed += OnExitDoorDestroyed;
         GameManager.Instance.onChangedSpellcraft += OnChangedSpellcraft;
         GameManager.Instance.onChangedSpellcraftTotal += OnChangedSpellcraftTotal;
-
+        GameManager.Instance.onChangedSanity += OnChangedSanity;
+        GameManager.Instance.onChangedSanityTotal += OnChangedSanityTotal;
+        GameManager.Instance.onTutorialTriggered += OnTutorialTriggered;
         // Testing popup text
         anxietyAttackText.text = "In case your mouse goes crazy, press a number key to adjust sensitivity. 1 is the least sensitive, 9 is more sensitive.";
         StartCoroutine(PopupFade(anxietyAttackCG, fadeInTime, keepOnTime+5, fadeOutTime));
@@ -51,6 +53,8 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.onExitDoorDestroyed -= OnExitDoorDestroyed;
         GameManager.Instance.onChangedSpellcraft -= OnChangedSpellcraft;
         GameManager.Instance.onChangedSpellcraftTotal -= OnChangedSpellcraftTotal;
+        GameManager.Instance.onChangedSanity -= OnChangedSanity;
+        GameManager.Instance.onChangedSanityTotal -= OnChangedSanityTotal;
     }
 
     private void OnChangedSpellcraftTotal()
@@ -65,10 +69,30 @@ public class UIManager : MonoBehaviour
 
     }
 
+    private void OnChangedSanityTotal()
+    {
+        sanitySlider.value = GameManager.Instance.sanity / GameManager.Instance.sanityMax;
+
+    }
+
+    private void OnChangedSanity()
+    {
+        sanitySlider.value = GameManager.Instance.sanity / GameManager.Instance.sanityMax;
+
+    }
+
     private void OnExitDoorDestroyed()
     {
         layerNumCG.alpha = 1f;
         layerNum.text = GameManager.Instance.getCurrentLayer().ToString();
+
+
+    }
+
+    private void OnTutorialTriggered(string message)
+    {
+        anxietyAttackText.text = message;
+        StartCoroutine(PopupFade(anxietyAttackCG, fadeInTime, keepOnTime, fadeOutTime));
 
 
     }
