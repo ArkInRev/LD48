@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     public float sanity;
     public List<PhobiasSO> phobias;
     public float spellcraftRestoreMultiplier;
+    public CharacterController cc;
     //artifact
     public float bookMinDrain;
     public float bookMaxDrain;
@@ -136,7 +137,12 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (triggeringAtaxMess) doPhobiaDamage();
+        if (triggeringAtaxMess&&hasAtaxMess) doPhobiaDamage();
+        if (triggeringBathSlope&&hasBathSlope) doPhobiaDamage();
+        if (triggeringBiblioBook&&hasBiblioBook) doPhobiaDamage();
+        if (triggeringErgoWork && hasErgoWork) doPhobiaDamage();
+        if (triggeringKoinRoom && hasKoinRoom) doPhobiaDamage();
+        if (triggeringNyctDark && hasNyctDark) doPhobiaDamage();
 
 
 
@@ -162,7 +168,9 @@ public class GameManager : MonoBehaviour
 
     public void teleportPlayerToStart()
     {
+        cc.enabled = false;
         player.transform.position = playerReturnTransform.position;
+        cc.enabled = true;
     }
 
     public void gainRandomPhobia()
