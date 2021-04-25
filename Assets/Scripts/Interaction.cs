@@ -9,6 +9,8 @@ public class Interaction : MonoBehaviour
     private bool highlighting;
     private Transform lastTransformHit;
 
+    public ParticleSystem interactParticles;
+
     public float interactDistance;
 
     private void Start()
@@ -50,6 +52,7 @@ public class Interaction : MonoBehaviour
                 if(hit.transform.GetComponent<IInteractable>() != null)
                 {
                     hit.transform.GetComponent<IInteractable>().Interact();
+                    Instantiate(interactParticles, hit.point, Quaternion.identity);
                 }
 
             }
