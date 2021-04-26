@@ -217,7 +217,7 @@ public class LayerGenerationManager : MonoBehaviour
             }
         }
         //instantiate east and west
-        for (int i = 0; i < thisLayer.layerWidth; i++)
+        for (int i = 0; i < thisLayer.layerHeight; i++)
         {
             if (!(((curGameLayer.exitWall == Direction.EAST) && (i == curGameLayer.exitWallLoc)) || ((curGameLayer.entranceWall == Direction.EAST) && (i == curGameLayer.entranceWallLoc))))
             {
