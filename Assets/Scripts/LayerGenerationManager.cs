@@ -90,7 +90,7 @@ public class LayerGenerationManager : MonoBehaviour
 
         nextDepthLayer.thisLayerNumber = layerNum + 1;
 
-        if (GameManager.Instance.staticFloors)
+        if (!GameManager.Instance.staticFloors)
         {
             nextDepthLayer.layerWidth = Mathf.Clamp(layerNum + (int)Random.Range(0, 2), 2, layerNum + 2);
             nextDepthLayer.layerHeight = Mathf.Clamp(layerNum + (int)Random.Range(0, 2),2,layerNum+2);
